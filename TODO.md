@@ -1,0 +1,4 @@
+- Limite de deepness
+- Cuidado con cwd() puede ser overkill si es mal usado: dejar obsoleto, o buscar un /config
+- Si no encontramos working dir, throw
+- try catch en config.load()
