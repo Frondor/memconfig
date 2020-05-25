@@ -20,8 +20,8 @@
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "test": "jest --coverage",
-    "prepreversion": "git checkout develop && git merge master && git checkout release/v%s ",
-    "preversion": "npm run lint && npm ci && npm test",
+    "branching": "git checkout develop && git merge master",
+    "preversion": "git checkout release/v%s && npm run lint && npm ci && npm test",
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
