@@ -1,11 +1,11 @@
 {
   "name": "memconfig",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "keywords": [],
   "main": "dist/memconfig.umd.js",
   "module": "dist/memconfig.es5.js",
-  "types": "dist/types/memconfig.d.ts",
+  "types": "dist/types/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist"
