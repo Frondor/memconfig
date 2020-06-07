@@ -1,8 +1,14 @@
 {
   "name": "memconfig",
   "version": "0.1.2",
-  "description": "",
-  "keywords": [],
+  "description": "Manage project-wide configuration from an immutable in-memory store, using a friendly interface powered by lodash's get/set path-like selectors",
+  "keywords": [
+    "configuration",
+    "config",
+    "node",
+    "browser",
+    "manager"
+  ],
   "main": "dist/memconfig.umd.js",
   "module": "dist/memconfig.es5.js",
   "types": "dist/types/index.d.ts",
