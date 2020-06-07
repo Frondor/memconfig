@@ -43,9 +43,9 @@ This module works both in the browser and Node.JS environments. Let's see some e
 #### Database configs in Node
 
 ```js
-const ConfigManager = require('memconfig')
+const { Config } = require('memconfig')
 
-const config = new ConfigManager()
+const config = new Config()
 config.set('database.port', 3001)
 config.get('database').port === 3001 // true
 config.get(['database', 'host'], 'default-host') // "default-host"
@@ -54,9 +54,9 @@ config.get(['database', 'host'], 'default-host') // "default-host"
 ### User UI (serializable) settings in the browser
 
 ```js
-const ConfigManager = require('memconfig')
+import { Config } from 'memconfig' // es6 supported!
 
-const config = new ConfigManager()
+const config = new Config()
 // user enables dark mode
 config.set('userSettings.darkMode', true)
 
