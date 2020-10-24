@@ -9,4 +9,5 @@ module.exports = {
       statements: 100,
     },
   },
+  collectCoverageFrom: ['./src/*.{js,jsx}', '!**/node_modules/**', '!**/dist/**'],
 }
