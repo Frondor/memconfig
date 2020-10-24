@@ -26,7 +26,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.js",
     "test": "jest --coverage",
-    "preversion": "git merge master && git push -u origin HEAD && npm ci && npm run lint && npm run build && npm test",
+    "preversion": "git merge origin/master && git push -u origin HEAD && npm ci && npm run lint && npm run build && npm test",
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
