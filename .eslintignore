@@ -6,3 +6,5 @@ dist
 coverage
 # any dot file
 .*
+# any config file
+*.config.js

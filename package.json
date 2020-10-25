@@ -1,6 +1,6 @@
 {
   "name": "memconfig",
-  "version": "0.1.3",
+  "version": "0.2.1",
   "description": "Manage project-wide configuration from an immutable in-memory store, using a friendly interface powered by lodash's get/set path-like selectors",
   "keywords": [
     "configuration",
@@ -19,50 +19,52 @@
   "author": "Frondor <frondor.dev@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.ts --fix",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "npm run lint -- --fix",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
+    "build": "tsc --module commonjs && rollup -c rollup.config.js",
     "test": "jest --coverage",
-    "preversion": "git merge master && git push -u origin HEAD && npm ci && npm run lint && npm run build && npm test",
+    "preversion": "git merge origin/master && git push -u origin HEAD && npm ci && npm run lint && npm run build && npm test",
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@types/jest": "^25.2.3",
-    "@types/lodash": "^4.14.152",
-    "@types/node": "^14.0.5",
-    "@typescript-eslint/eslint-plugin": "^3.0.0",
-    "@typescript-eslint/parser": "^3.0.0",
-    "eslint": "^7.1.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.8.2",
-    "eslint-plugin-prettier": "^3.1.3",
-    "jest": "^26.0.1",
-    "jest-config": "^26.0.1",
-    "prettier": "^2.0.5",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.10.9",
-    "rollup-plugin-bundle-size": "^1.0.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-sourcemaps": "^0.6.2",
-    "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-typescript2": "^0.27.1",
-    "rollup-plugin-uglify": "^6.0.4",
-    "ts-jest": "^26.0.0",
-    "ts-node": "^8.10.1",
-    "tslint": "^6.1.2",
-    "tslint-config-prettier": "^1.15.0",
-    "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.0.3"
+    "@rollup/plugin-commonjs": "15.1.0",
+    "@rollup/plugin-json": "4.1.0",
+    "@rollup/plugin-node-resolve": "9.0.0",
+    "@types/jest": "26.0.15",
+    "@types/lodash": "4.14.162",
+    "@types/node": "14.14.2",
+    "@typescript-eslint/eslint-plugin": "4.5.0",
+    "@typescript-eslint/parser": "4.5.0",
+    "eslint": "7.12.0",
+    "eslint-config-prettier": "6.14.0",
+    "eslint-config-standard": "15.0.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest": "24.1.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.2",
+    "husky": "4.3.0",
+    "jest": "26.6.1",
+    "jest-config": "26.6.1",
+    "lint-staged": "10.4.2",
+    "prettier": "2.1.2",
+    "rimraf": "3.0.2",
+    "rollup": "2.32.1",
+    "rollup-plugin-bundle-size": "1.0.3",
+    "rollup-plugin-sourcemaps": "0.6.3",
+    "rollup-plugin-terser": "7.0.2",
+    "rollup-plugin-typescript2": "0.28.0",
+    "ts-jest": "26.4.2",
+    "ts-node": "9.0.0",
+    "typescript": "4.0.3"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "4.17.20"
   },
   "repository": {
     "type": "git",
@@ -71,5 +73,13 @@
   "bugs": {
     "url": "https://github.com/Frondor/memconfig/issues"
   },
-  "homepage": "https://github.com/Frondor/memconfig#readme"
+  "homepage": "https://github.com/Frondor/memconfig#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --cache --fix"
+  }
 }
