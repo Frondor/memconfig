@@ -80,6 +80,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts}": ["eslint --cache --fix", "prettier --fix"]
+    "*.{js,ts}": "eslint --cache --fix"
   }
 }
