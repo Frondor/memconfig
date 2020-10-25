@@ -8,3 +8,5 @@ coverage
 .*
 # any config file
 *.config.js
+
+.eslintcache
