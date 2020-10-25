@@ -18,9 +18,9 @@ export default {
       file: pkg.main,
       name: camelCase(libraryName),
       format: 'umd',
-      sourcemap: true,
+      sourcemap: true
     },
-    { file: pkg.module, format: 'es', sourcemap: true },
+    { file: pkg.module, format: 'es', sourcemap: true }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
@@ -39,6 +39,6 @@ export default {
     // Resolve source maps to the original source
     sourceMaps(),
     terser(), // minify
-    bundleSize(), // display file sizes
-  ],
+    bundleSize() // display file sizes
+  ]
 }
