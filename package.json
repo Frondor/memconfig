@@ -19,10 +19,11 @@
   "author": "Frondor <frondor.dev@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.ts --fix",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "npm run lint -- --fix",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.js",
     "test": "jest --coverage",
@@ -43,10 +44,14 @@
     "eslint-config-standard": "15.0.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jest": "24.1.0",
+    "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.2",
+    "husky": "4.3.0",
     "jest": "26.6.1",
     "jest-config": "26.6.1",
+    "lint-staged": "10.4.2",
     "prettier": "2.1.2",
     "rimraf": "3.0.2",
     "rollup": "2.32.1",
@@ -68,5 +73,13 @@
   "bugs": {
     "url": "https://github.com/Frondor/memconfig/issues"
   },
-  "homepage": "https://github.com/Frondor/memconfig#readme"
+  "homepage": "https://github.com/Frondor/memconfig#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --cache --fix"
+  }
 }
