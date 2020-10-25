@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import get from 'lodash/get'
 import set from 'lodash/set'
 import unset from 'lodash/unset'

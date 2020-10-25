@@ -10,18 +10,20 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:@typescript-eslint/recommended',
-    'airbnb-base',
+    'standard',
     'plugin:import/typescript',
     'plugin:jest/all',
     'prettier',
+    'prettier/@typescript-eslint',
   ],
-  plugins: ['@typescript-eslint', 'jest', 'prettier'],
+  plugins: ['@typescript-eslint', 'jest', 'standard', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
     ecmaVersion: 2015,
+    project: './tsconfig.json',
   },
   rules: {
     'prettier/prettier': 'error',

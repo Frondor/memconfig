@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/naming-convention,no-underscore-dangle */
 import cloneDeep from 'lodash/cloneDeep'
 import Config, { ERR_CONFIG_FROZEN } from '../src/Config'
 
