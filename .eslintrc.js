@@ -23,7 +23,7 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2015,
-    project: './tsconfig.json',
+    project: './tsconfig.eslint.json',
   },
   rules: {
     'prettier/prettier': 'error',
