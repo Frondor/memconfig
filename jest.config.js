@@ -8,6 +8,5 @@ module.exports = {
       lines: 100,
       statements: 100
     }
-  },
-  collectCoverageFrom: ['./src/*.{js,jsx}', '!**/node_modules/**', '!**/dist/**']
+  }
 }
