@@ -4,23 +4,28 @@ import unset from 'lodash/unset'
 import cloneDeep from 'lodash/cloneDeep'
 import type { PropertyPath } from 'lodash'
 
+type ConfigStore = Record<string, unknown>
+
+interface ConfigSettings {
+  immutable?: boolean
+}
 export default class Config {
-  private _store: Record<string, unknown>
+  private _store: ConfigStore
 
   protected frozen = false
 
   private _immutable = true
 
-  constructor({ immutable = true } = {}) {
+  constructor({ immutable = true }: ConfigSettings = {}) {
     this._immutable = immutable
     this._store = {}
   }
 
-  get immutable() {
+  get immutable(): boolean {
     return this._immutable
   }
 
-  get store() {
+  get store(): ConfigStore {
     return this.breakRef(this._store)
   }
 
@@ -28,17 +33,19 @@ export default class Config {
     return this.breakRef<T>(get(this._store, valuePath, defaultValue))
   }
 
-  set(valuePath: PropertyPath, value: unknown) {
+  set(valuePath: PropertyPath, value: unknown): this {
     this.throwIfFrozen()
-    return set(this._store, valuePath, this.breakRef(value))
+    set(this._store, valuePath, this.breakRef(value))
+    return this
   }
 
-  delete(valuePath: PropertyPath) {
+  delete(valuePath: PropertyPath): this {
     this.throwIfFrozen()
-    return unset(this._store, valuePath)
+    unset(this._store, valuePath)
+    return this
   }
 
-  setStore(store = {}) {
+  setStore(store = {}): void {
     this.throwIfFrozen()
     this._store = this.breakRef(store)
   }
@@ -56,27 +63,27 @@ export default class Config {
     }
   }
 
-  freeze() {
+  freeze(): void {
     this.frozen = true
   }
 
-  unfreeze() {
+  unfreeze(): void {
     this.frozen = false
   }
 
-  toJSON() {
+  toJSON(): ConfigStore {
     return this._store
   }
 
-  toString() {
+  toString(): string {
     return JSON.stringify(this)
   }
 
-  static from(serializedStore: string, settings = {}) {
+  static from(serializedStore: string, settings = {}): Config {
     const config = new Config(settings)
     try {
       config.setStore(JSON.parse(serializedStore))
-    } catch (error) {}
+    } catch (error) { } // eslint-disable-line
     return config
   }
 }
