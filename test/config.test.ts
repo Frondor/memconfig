@@ -90,37 +90,25 @@ describe('config class', () => {
     const serialized = '{"string":"string","obj":{"a":1},"arr":[1,"2",3]}'
     expect(JSON.stringify(config)).toBe(serialized)
     expect(config.toString()).toBe(serialized)
-    expect(Config.from(serialized)).toMatchInlineSnapshot(`
-      Object {
-        "arr": Array [
-          1,
-          "2",
-          3,
-        ],
-        "obj": Object {
-          "a": 1,
-        },
-        "string": "string",
-      }
-    `)
+    expect(Config.from(serialized)).toStrictEqual({
+      arr: [1, '2', 3],
+      obj: {
+        a: 1,
+      },
+      string: 'string',
+    })
   })
 
   it('config.from static method accepts settings', () => {
     const serialized = '{"string":"string","obj":{"a":1},"arr":[1,"2",3]}'
     const config = Config.from(serialized, { immutable: false })
     expect(config.immutable).toBe(false)
-    expect(config).toMatchInlineSnapshot(`
-      Object {
-        "arr": Array [
-          1,
-          "2",
-          3,
-        ],
-        "obj": Object {
-          "a": 1,
-        },
-        "string": "string",
-      }
-    `)
+    expect(config).toStrictEqual({
+      arr: [1, '2', 3],
+      obj: {
+        a: 1,
+      },
+      string: 'string',
+    })
   })
 })

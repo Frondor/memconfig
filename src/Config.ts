@@ -83,7 +83,7 @@ export default class Config {
     const config = new Config(settings)
     try {
       config.setStore(JSON.parse(serializedStore))
-    } catch (error) { } // eslint-disable-line
+    } catch (error) {} // eslint-disable-line
     return config
   }
 }
