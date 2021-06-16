@@ -14,7 +14,6 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:jest/all',
     'prettier',
-    'prettier/@typescript-eslint',
   ],
   plugins: ['@typescript-eslint', 'jest', 'standard', 'prettier'],
   globals: {
@@ -28,9 +27,6 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'jest/prefer-expect-assertions': 'off',
-    '@typescript-eslint/no-explicit-any': ['error', { fixToUnknown: true, ignoreRestArgs: true }],
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    'no-empty': ['error', { allowEmptyCatch: true }],
     'import/extensions': 'off',
     'import/no-unresolved': [2, { caseSensitive: false }],
   },

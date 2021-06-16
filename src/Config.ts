@@ -2,47 +2,71 @@ import get from 'lodash/get'
 import set from 'lodash/set'
 import unset from 'lodash/unset'
 import cloneDeep from 'lodash/cloneDeep'
-import { PropertyPath } from 'lodash'
+import type { PropertyPath } from 'lodash'
 
-export const ERR_CONFIG_FROZEN = 'Cannot make changes while config is frozen'
+type ConfigStore = Record<string, unknown>
+
+interface ConfigSettings {
+  immutable?: boolean
+}
+
+interface PrivateProps {
+  immutable: boolean
+  frozen: boolean
+  store: ConfigStore
+}
 
 export default class Config {
-  private _store: Record<string, unknown>
-
-  protected frozen = false
-
-  private _immutable = true
-
-  constructor({ immutable = true } = {}) {
-    this._immutable = immutable
-    this._store = {}
+  private _: PrivateProps = {
+    immutable: true,
+    frozen: false,
+    store: {},
   }
 
-  get immutable() {
-    return this._immutable
+  constructor({ immutable = true }: ConfigSettings = {}) {
+    Object.defineProperty(this, '_', {
+      value: { immutable, store: {}, frozen: false },
+      enumerable: false,
+    })
   }
 
-  get store() {
-    return this.breakRef(this._store)
+  get immutable(): boolean {
+    return this._.immutable
   }
 
-  get(valuePath: PropertyPath, defaultValue?: unknown) {
-    return this.breakRef(get(this._store, valuePath, defaultValue))
+  get frozen(): boolean {
+    return this._.frozen
   }
 
-  set(valuePath: PropertyPath, value: unknown) {
+  get store(): ConfigStore {
+    return this.breakRef(this.valueOf())
+  }
+
+  get<T = unknown>(valuePath: PropertyPath, defaultValue?: unknown): T {
+    return this.breakRef<T>(get(this.valueOf(), valuePath, defaultValue))
+  }
+
+  set(valuePath: PropertyPath, value: unknown): this {
     this.throwIfFrozen()
-    return set(this._store, valuePath, this.breakRef(value))
+    set(this.valueOf(), valuePath, this.breakRef(value))
+    return this
   }
 
-  delete(valuePath: PropertyPath) {
+  delete(valuePath: PropertyPath): this {
     this.throwIfFrozen()
-    return unset(this._store, valuePath)
+    unset(this.valueOf(), valuePath)
+    return this
   }
 
-  setStore(store = {}) {
+  setStore(store = {}): this {
     this.throwIfFrozen()
-    this._store = this.breakRef(store)
+    this._.store = this.breakRef(store)
+    return this
+  }
+
+  merge(store: Config | ConfigStore): this {
+    this.setStore(Object.assign({}, this.valueOf(), store.valueOf()))
+    return this
   }
 
   protected breakRef<T>(val: T): T {
@@ -52,31 +76,37 @@ export default class Config {
 
   private throwIfFrozen() {
     if (this.frozen) {
-      throw new Error(ERR_CONFIG_FROZEN)
+      const err = new Error('Cannot make changes while config is frozen')
+      err.name = 'ConfigFrozenError'
+      throw err
     }
   }
 
-  freeze() {
-    this.frozen = true
+  freeze(): void {
+    this._.frozen = true
   }
 
-  unfreeze() {
-    this.frozen = false
+  unfreeze(): void {
+    this._.frozen = false
   }
 
-  toJSON() {
-    return this._store
+  valueOf(): ConfigStore {
+    return this._.store
   }
 
-  toString() {
+  toJSON(): ConfigStore {
+    return this.valueOf()
+  }
+
+  toString(): string {
     return JSON.stringify(this)
   }
 
-  static from(serializedStore: string, settings = {}) {
+  static from(serializedStore: string, settings = {}): Config {
     const config = new Config(settings)
     try {
       config.setStore(JSON.parse(serializedStore))
-    } catch (error) {}
+    } catch (error) {} // eslint-disable-line
     return config
   }
 }
