@@ -26,6 +26,10 @@ And it goes pretty well with [merge-files-content](https://www.npmjs.com/package
 
 ## Installation
 
+Before installing, you need to install [lodash](https://lodash.com/) by yourself, since it's a peerDependency.
+
+In case your project doesn't already uses it, run `npm i lodash`.
+
 ```
 npm i memconfig
 ```

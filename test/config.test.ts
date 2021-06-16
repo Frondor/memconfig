@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention,no-underscore-dangle */
 import cloneDeep from 'lodash/cloneDeep'
-import Config, { ERR_CONFIG_FROZEN } from '../src/Config'
+import Config from '../src/Config'
 
 const store = (defaults = {}): Record<string, unknown> =>
   cloneDeep({
@@ -74,7 +74,7 @@ describe('config class', () => {
 
   it('config set/delete/setStore methods throw in frozen mode', () => {
     const config = new Config()
-    const message = ERR_CONFIG_FROZEN
+    const message = 'Cannot make changes while config is frozen'
     config.freeze()
     expect(() => config.set('a', 1)).toThrow(message)
     expect(() => config.delete('a')).toThrow(message)

@@ -2,9 +2,7 @@ import get from 'lodash/get'
 import set from 'lodash/set'
 import unset from 'lodash/unset'
 import cloneDeep from 'lodash/cloneDeep'
-import { PropertyPath } from 'lodash'
-
-export const ERR_CONFIG_FROZEN = 'Cannot make changes while config is frozen'
+import type { PropertyPath } from 'lodash'
 
 export default class Config {
   private _store: Record<string, unknown>
@@ -26,8 +24,8 @@ export default class Config {
     return this.breakRef(this._store)
   }
 
-  get(valuePath: PropertyPath, defaultValue?: unknown) {
-    return this.breakRef(get(this._store, valuePath, defaultValue))
+  get<T = unknown>(valuePath: PropertyPath, defaultValue?: unknown): T {
+    return this.breakRef<T>(get(this._store, valuePath, defaultValue))
   }
 
   set(valuePath: PropertyPath, value: unknown) {
@@ -52,7 +50,9 @@ export default class Config {
 
   private throwIfFrozen() {
     if (this.frozen) {
-      throw new Error(ERR_CONFIG_FROZEN)
+      const err = new Error('Cannot make changes while config is frozen')
+      err.name = 'ConfigFrozenError'
+      throw err
     }
   }
 
