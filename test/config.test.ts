@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention,no-underscore-dangle */
 import cloneDeep from 'lodash/cloneDeep'
-import Config, { ERR_CONFIG_FROZEN } from '../src/Config'
+import Config from '../src/Config'
 
 const store = (defaults = {}): Record<string, unknown> =>
   cloneDeep({
@@ -74,7 +74,7 @@ describe('config class', () => {
 
   it('config set/delete/setStore methods throw in frozen mode', () => {
     const config = new Config()
-    const message = ERR_CONFIG_FROZEN
+    const message = 'Cannot make changes while config is frozen'
     config.freeze()
     expect(() => config.set('a', 1)).toThrow(message)
     expect(() => config.delete('a')).toThrow(message)
@@ -85,42 +85,40 @@ describe('config class', () => {
     expect(() => config.setStore()).not.toThrow()
   })
 
+  it('config.merge merges part of stores', () => {
+    const config = new Config()
+    config.set('a', { b: 1 })
+    config.set('b', { c: 2 })
+    config.merge({ a: 1, c: 3 })
+    expect(config.store).toStrictEqual({ a: 1, b: { c: 2 }, c: 3 })
+  })
+
+  it('config.merge merges multiple configs', () => {
+    const config1 = new Config()
+    const config2 = new Config()
+    config1.set('a', 1)
+    config2.set('b', 2)
+    config1.merge(config2)
+    expect(config1.store).toStrictEqual({ a: 1, b: 2 })
+  })
+
   it('config de/serializes', () => {
     const config = makeConfig()
     const serialized = '{"string":"string","obj":{"a":1},"arr":[1,"2",3]}'
     expect(JSON.stringify(config)).toBe(serialized)
     expect(config.toString()).toBe(serialized)
-    expect(Config.from(serialized)).toMatchInlineSnapshot(`
-      Object {
-        "arr": Array [
-          1,
-          "2",
-          3,
-        ],
-        "obj": Object {
-          "a": 1,
-        },
-        "string": "string",
-      }
-    `)
+    expect(Config.from(serialized).store).toStrictEqual({
+      arr: [1, '2', 3],
+      obj: {
+        a: 1,
+      },
+      string: 'string',
+    })
   })
 
   it('config.from static method accepts settings', () => {
     const serialized = '{"string":"string","obj":{"a":1},"arr":[1,"2",3]}'
     const config = Config.from(serialized, { immutable: false })
     expect(config.immutable).toBe(false)
-    expect(config).toMatchInlineSnapshot(`
-      Object {
-        "arr": Array [
-          1,
-          "2",
-          3,
-        ],
-        "obj": Object {
-          "a": 1,
-        },
-        "string": "string",
-      }
-    `)
   })
 })

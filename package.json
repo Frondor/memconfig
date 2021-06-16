@@ -9,62 +9,57 @@
     "browser",
     "manager"
   ],
-  "main": "dist/memconfig.umd.js",
-  "module": "dist/memconfig.es5.js",
+  "source": "src/index.ts",
+  "main": "dist/memconfig.js",
+  "unpkg": "dist/memconfig.umd.js",
+  "module": "dist/memconfig.module.js",
+  "exports": "./dist/memconfig.modern.js",
   "types": "dist/types/index.d.ts",
-  "sideEffects": false,
   "files": [
     "dist"
   ],
   "author": "Frondor <frondor.dev@gmail.com>",
   "license": "MIT",
+  "sideEffects": false,
   "engines": {
     "node": ">=10.13.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "prettier:fix": "prettier 'src' 'test' --write",
+    "lint": "eslint . --ext .js,.ts --cache",
     "lint:fix": "npm run lint -- --fix",
-    "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.js",
+    "build": "microbundle src/index.ts --compress",
     "test": "jest --coverage",
     "preversion": "git merge origin/master && git push -u origin HEAD && npm ci && npm run lint && npm run build && npm test",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "15.1.0",
-    "@rollup/plugin-json": "4.1.0",
-    "@rollup/plugin-node-resolve": "9.0.0",
-    "@types/jest": "26.0.15",
-    "@types/lodash": "4.14.162",
-    "@types/node": "14.14.2",
-    "@typescript-eslint/eslint-plugin": "4.5.0",
-    "@typescript-eslint/parser": "4.5.0",
-    "eslint": "7.12.0",
-    "eslint-config-prettier": "6.14.0",
-    "eslint-config-standard": "15.0.0",
-    "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jest": "24.1.0",
+    "@types/jest": "26.0.23",
+    "@types/lodash": "4.14.170",
+    "@types/node": "15.12.2",
+    "@typescript-eslint/eslint-plugin": "4.27.0",
+    "@typescript-eslint/parser": "4.27.0",
+    "eslint": "7.28.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-jest": "24.3.6",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "3.1.4",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-standard": "4.0.2",
-    "husky": "4.3.0",
-    "jest": "26.6.1",
-    "jest-config": "26.6.1",
-    "lint-staged": "10.4.2",
-    "prettier": "2.1.2",
-    "rimraf": "3.0.2",
-    "rollup": "2.32.1",
-    "rollup-plugin-bundle-size": "1.0.3",
-    "rollup-plugin-sourcemaps": "0.6.3",
-    "rollup-plugin-terser": "7.0.2",
-    "rollup-plugin-typescript2": "0.28.0",
-    "ts-jest": "26.4.2",
-    "ts-node": "9.0.0",
-    "typescript": "4.0.3"
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-promise": "5.1.0",
+    "eslint-plugin-standard": "4.1.0",
+    "husky": "6.0.0",
+    "jest": "27.0.4",
+    "jest-config": "27.0.4",
+    "lint-staged": "11.0.0",
+    "microbundle": "0.13.3",
+    "prettier": "2.3.1",
+    "ts-jest": "27.0.3",
+    "typescript": "4.3.2"
   },
   "dependencies": {
-    "lodash": "4.17.20"
+    "lodash": "4.17.21"
   },
   "repository": {
     "type": "git",
@@ -74,12 +69,10 @@
     "url": "https://github.com/Frondor/memconfig/issues"
   },
   "homepage": "https://github.com/Frondor/memconfig#readme",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.{js,ts}": "eslint --cache --fix"
+    "*.{js,ts}": [
+      "npm run prettier:fix",
+      "npm run lint:fix"
+    ]
   }
 }

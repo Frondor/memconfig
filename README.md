@@ -26,6 +26,10 @@ And it goes pretty well with [merge-files-content](https://www.npmjs.com/package
 
 ## Installation
 
+Before installing, you need to install [lodash](https://lodash.com/) by yourself, since it's a peerDependency.
+
+In case your project doesn't already uses it, run `npm i lodash`.
+
 ```
 npm i memconfig
 ```
@@ -93,7 +97,7 @@ Freeze the Config instance and prevent new values to be inserted into the store.
 
 Use `config.unfreeze()` to unfreeze.
 
-> ⚠️ It is advisable to use this method once your Node.JS app starts if you're clustering it, to ensure that nobody tries to mutate configurations at runtime.
+> ⚠️ For Node.JS, it is advisable to use this method once your app starts if you're clustering it, to ensure that nobody tries to mutate configurations at runtime.
 
 ### 🔧 `config.get(valuePath, defaultValue)`
 
@@ -102,6 +106,10 @@ Internally it uses lodash's [get](https://lodash.com/docs/#get) to resolve `valu
 ### 🔧 `config.set(valuePath, value)`
 
 Internally it uses lodash's [set](https://lodash.com/docs/#set).
+
+### 🔧 `config.merge(obj | Config)`
+
+Merges the given object (or instance of `Config`) into the store.
 
 ### 🔧 `config.delete(valuePath)`
 
