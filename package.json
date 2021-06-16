@@ -72,7 +72,7 @@
   "lint-staged": {
     "*.{js,ts}": [
       "npm run prettier:fix",
-      "npm run lint"
+      "npm run lint:fix"
     ]
   }
 }
