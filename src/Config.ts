@@ -9,45 +9,62 @@ type ConfigStore = Record<string, unknown>
 interface ConfigSettings {
   immutable?: boolean
 }
+
+interface PrivateProps {
+  immutable: boolean
+  frozen: boolean
+  store: ConfigStore
+}
+
 export default class Config {
-  private _store: ConfigStore
-
-  protected frozen = false
-
-  private _immutable = true
+  private _: PrivateProps = {
+    immutable: true,
+    frozen: false,
+    store: {},
+  }
 
   constructor({ immutable = true }: ConfigSettings = {}) {
-    this._immutable = immutable
-    this._store = {}
+    Object.defineProperty(this, '_', {
+      value: { immutable, store: {}, frozen: false },
+      enumerable: false,
+    })
   }
 
   get immutable(): boolean {
-    return this._immutable
+    return this._.immutable
+  }
+
+  get frozen(): boolean {
+    return this._.frozen
   }
 
   get store(): ConfigStore {
-    return this.breakRef(this._store)
+    return this.breakRef(this.valueOf())
   }
 
   get<T = unknown>(valuePath: PropertyPath, defaultValue?: unknown): T {
-    return this.breakRef<T>(get(this._store, valuePath, defaultValue))
+    return this.breakRef<T>(get(this.valueOf(), valuePath, defaultValue))
   }
 
   set(valuePath: PropertyPath, value: unknown): this {
     this.throwIfFrozen()
-    set(this._store, valuePath, this.breakRef(value))
+    set(this.valueOf(), valuePath, this.breakRef(value))
     return this
   }
 
   delete(valuePath: PropertyPath): this {
     this.throwIfFrozen()
-    unset(this._store, valuePath)
+    unset(this.valueOf(), valuePath)
     return this
   }
 
   setStore(store = {}): void {
     this.throwIfFrozen()
-    this._store = this.breakRef(store)
+    this._.store = this.breakRef(store)
+  }
+
+  merge(store: Config | ConfigStore): void {
+    this.setStore(Object.assign({}, this.valueOf(), store.valueOf()))
   }
 
   protected breakRef<T>(val: T): T {
@@ -64,15 +81,19 @@ export default class Config {
   }
 
   freeze(): void {
-    this.frozen = true
+    this._.frozen = true
   }
 
   unfreeze(): void {
-    this.frozen = false
+    this._.frozen = false
+  }
+
+  valueOf(): ConfigStore {
+    return this._.store
   }
 
   toJSON(): ConfigStore {
-    return this._store
+    return this.valueOf()
   }
 
   toString(): string {
