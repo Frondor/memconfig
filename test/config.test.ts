@@ -90,7 +90,7 @@ describe('config class', () => {
     const serialized = '{"string":"string","obj":{"a":1},"arr":[1,"2",3]}'
     expect(JSON.stringify(config)).toBe(serialized)
     expect(config.toString()).toBe(serialized)
-    expect(Config.from(serialized)).toStrictEqual({
+    expect(Config.from(serialized).store).toStrictEqual({
       arr: [1, '2', 3],
       obj: {
         a: 1,
@@ -103,12 +103,5 @@ describe('config class', () => {
     const serialized = '{"string":"string","obj":{"a":1},"arr":[1,"2",3]}'
     const config = Config.from(serialized, { immutable: false })
     expect(config.immutable).toBe(false)
-    expect(config).toStrictEqual({
-      arr: [1, '2', 3],
-      obj: {
-        a: 1,
-      },
-      string: 'string',
-    })
   })
 })
