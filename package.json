@@ -25,7 +25,8 @@
     "node": ">=10.13.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "prettier:fix": "prettier 'src' 'test' --write",
+    "lint": "eslint . --ext .js,.ts --cache",
     "lint:fix": "npm run lint -- --fix",
     "build": "microbundle src/index.ts --compress",
     "test": "jest --coverage",
@@ -69,6 +70,9 @@
   },
   "homepage": "https://github.com/Frondor/memconfig#readme",
   "lint-staged": {
-    "*.{js,ts}": "eslint --cache --fix"
+    "*.{js,ts}": [
+      "npm run prettier:fix",
+      "npm run lint"
+    ]
   }
 }
