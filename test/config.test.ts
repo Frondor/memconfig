@@ -89,8 +89,7 @@ describe('config class', () => {
     const config = new Config()
     config.set('a', { b: 1 })
     config.set('b', { c: 2 })
-    config.merge({ a: 1, c: 3 })
-    expect(config.store).toStrictEqual({ a: 1, b: { c: 2 }, c: 3 })
+    expect(config.merge({ a: 1, c: 3 }).store).toStrictEqual({ a: 1, b: { c: 2 }, c: 3 })
   })
 
   it('config.merge merges multiple configs', () => {
@@ -98,8 +97,7 @@ describe('config class', () => {
     const config2 = new Config()
     config1.set('a', 1)
     config2.set('b', 2)
-    config1.merge(config2)
-    expect(config1.store).toStrictEqual({ a: 1, b: 2 })
+    expect(config1.merge(config2).store).toStrictEqual({ a: 1, b: 2 })
   })
 
   it('config de/serializes', () => {

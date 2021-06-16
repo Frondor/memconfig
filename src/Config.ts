@@ -58,13 +58,15 @@ export default class Config {
     return this
   }
 
-  setStore(store = {}): void {
+  setStore(store = {}): this {
     this.throwIfFrozen()
     this._.store = this.breakRef(store)
+    return this
   }
 
-  merge(store: Config | ConfigStore): void {
+  merge(store: Config | ConfigStore): this {
     this.setStore(Object.assign({}, this.valueOf(), store.valueOf()))
+    return this
   }
 
   protected breakRef<T>(val: T): T {
